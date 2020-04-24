@@ -1,0 +1,45 @@
+body,
+html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial;
+    font-size: 18px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+main {
+    display: grid;
+    grid-template-rows: 10vh 1fr; 
+    padding: .6rem; 
+    gap: .6rem;
+}
+
+input {
+    padding: .6rem;
+    font-size: 16px;
+    text-align: center;
+    color: darkslategray;
+}
+
+#characters {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: .6rem;
+    
+}
+
+article {
+    min-height: 300px;
+    background-color: darkslategray;
+    color: white;
+    padding: .6rem;
+    height: 100px;
+    place-items: center;
+    text-align: center;
+    box-shadow: 0 0 8px 2px lightgrey;
+    background-size: cover;
+}
+
