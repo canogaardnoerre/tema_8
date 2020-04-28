@@ -1,0 +1,79 @@
+
+body,
+html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Manrope';
+}
+
+* {
+    box-sizing: border-box;
+}
+
+main {
+    display: grid;
+    height: 100vh;
+    place-items: center;
+}
+
+.circle{
+    height:10rem;
+    width:10rem;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    transition:.5s ease;
+    border-radius: 50rem;
+    font-size: 1.5rem;
+    color: black;
+}
+
+#alarm {
+    height: 100vh;
+    width: 30vw;
+    display: grid;
+    place-items: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translateX(30vw);
+    transition: .6 ease all;
+    background-color: coral;
+    color: white;
+}
+
+input {
+    padding: 1.5rem;
+    border: none;
+    border-radius: 2rem;
+    width: 150px;
+}
+
+#setAlarm {
+    padding: 1rem;
+    border-radius: 2rem;
+    border: none;
+    background-color: white;
+    color: coral;
+    font-weight: bold;
+}
+
+#setAlarm:hover {
+    background-color: lightyellow;
+}
+
+#showAlarm {
+    position: absolute;
+    bottom: 2rem;
+    left: 2rem;
+    padding: 1rem;
+    border-radius: 2rem;
+    border: none;
+    background-color: coral;
+    color: white;
+    font-weight: bold;
+}
+
+#showAlarm:hover {
+    background-color: lightcoral;
+}
