@@ -1,0 +1,12 @@
+{
+  "version": 3,
+  "file": "bundle.css",
+  "sources": [
+    "../../App.svelte"
+  ],
+  "sourcesContent": [
+    "<script>\n\n\timport {apikeys} from '44be8784988a4def8aada63319c511cb'\n\n\tlet ingredients = []\n\tlet recipe \n\n\t$: console.log(ingredients.toString())\n\tconst apikey = apikeys.spoonacular.api_key\n\n\tconst getRecipes = () => {\n\t\tfetch(`https://api.spoonacular.com/recipes/findByIngredients?apiKey=${apikey}&ingredients=${ingredients}&number=1`)\n\t\t\t.then( res => res.json() )\n\t\t\t.then( json => recipe = json[0])\n\t}\n\n\tconst addIngredients = (e) => {\n\t\te.target.checked ? ingredients = [...ingredients, e.target.id] : ingredients.filter( i => i!= e.target.id )\n\t}\n\n\n</script>\n\n<header>\n\t\n\t<h3>Whats in your fridge?</h3>\n\n\t<label for=\"tomatoes\">Tomatoes</label>\n\t<input id=\"+tomatoes\" type=\"checkbox\">\n\n\t<label for=\"lettuce\">Lettuce</label>\n\t<input id=\"+lettuce\" type=\"checkbox\">\n\n\t<label for=\"pasta\">Pasta</label>\n\t<input id=\"+pasta\" type=\"checkbox\">\n\n\t<hr>\n\t<button on:click={getRecipes}>Find recipes</button>\n\t<hr>\n\n</header>\n\n<main>\n\t\n\t{#if recipe}\n\t\t<h1>{recipe.title}</h1>\n\t\t<img src={recipe.image} alt={recipe.title}>\n\t{/if}\n\n</main>\n\n<style>\n\n\theader {\n\t\theight: 20vh;\n\t\tbackground-color: lightsalmon;\n\t}\n\n\tmain {\n\t\theight: 80vh;\n\t}\n\t\n</style>"
+  ],
+  "names": [],
+  "mappings": "AAqDC,MAAM,cAAC,CAAC,AACP,MAAM,CAAE,IAAI,CACZ,gBAAgB,CAAE,WAAW,AAC9B,CAAC,AAED,IAAI,cAAC,CAAC,AACL,MAAM,CAAE,IAAI,AACb,CAAC"
+}
