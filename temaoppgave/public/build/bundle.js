@@ -333,33 +333,39 @@ var app = (function () {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[9] = list[i];
+    	child_ctx[10] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[9] = list[i];
+    	child_ctx[13] = list[i];
     	return child_ctx;
     }
 
-    // (54:2) {#each suggestions as item}
-    function create_each_block_1(ctx) {
+    function get_each_context_2(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[10] = list[i];
+    	return child_ctx;
+    }
+
+    // (45:2) {#each suggestions as item}
+    function create_each_block_2(ctx) {
     	let div;
-    	let t_value = /*item*/ ctx[9].name + "";
+    	let t_value = /*item*/ ctx[10].name + "";
     	let t;
     	let dispose;
 
     	function click_handler(...args) {
-    		return /*click_handler*/ ctx[8](/*item*/ ctx[9], ...args);
+    		return /*click_handler*/ ctx[8](/*item*/ ctx[10], ...args);
     	}
 
     	const block = {
     		c: function create() {
     			div = element("div");
     			t = text(t_value);
-    			attr_dev(div, "class", "suggestion svelte-1qypst1");
-    			add_location(div, file, 54, 3, 1508);
+    			attr_dev(div, "class", "suggestion svelte-hyhval");
+    			add_location(div, file, 45, 3, 1263);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -368,7 +374,7 @@ var app = (function () {
     		},
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
-    			if (dirty & /*suggestions*/ 8 && t_value !== (t_value = /*item*/ ctx[9].name + "")) set_data_dev(t, t_value);
+    			if (dirty & /*suggestions*/ 8 && t_value !== (t_value = /*item*/ ctx[10].name + "")) set_data_dev(t, t_value);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div);
@@ -378,95 +384,143 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_each_block_1.name,
+    		id: create_each_block_2.name,
     		type: "each",
-    		source: "(54:2) {#each suggestions as item}",
+    		source: "(45:2) {#each suggestions as item}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (63:2) {#if recipe}
-    function create_if_block(ctx) {
+    // (56:2) {#each recipes as recipe}
+    function create_each_block_1(ctx) {
+    	let div;
+    	let h1;
+    	let t0_value = /*recipe*/ ctx[13].title + "";
+    	let t0;
+    	let t1;
     	let img;
     	let img_src_value;
     	let img_alt_value;
-    	let t0;
-    	let h1;
-    	let t1_value = /*recipe*/ ctx[1].title + "";
-    	let t1;
+    	let t2;
+    	let button;
+    	let t4;
 
     	const block = {
     		c: function create() {
-    			img = element("img");
-    			t0 = space();
+    			div = element("div");
     			h1 = element("h1");
-    			t1 = text(t1_value);
-    			if (img.src !== (img_src_value = /*recipe*/ ctx[1].image)) attr_dev(img, "src", img_src_value);
-    			attr_dev(img, "alt", img_alt_value = /*recipe*/ ctx[1].title);
-    			attr_dev(img, "class", "svelte-1qypst1");
-    			add_location(img, file, 63, 3, 1685);
-    			attr_dev(h1, "class", "svelte-1qypst1");
-    			add_location(h1, file, 64, 3, 1737);
+    			t0 = text(t0_value);
+    			t1 = space();
+    			img = element("img");
+    			t2 = space();
+    			button = element("button");
+    			button.textContent = "VIEW WHOLE RECIPE";
+    			t4 = space();
+    			attr_dev(h1, "class", "svelte-hyhval");
+    			add_location(h1, file, 57, 4, 1531);
+    			if (img.src !== (img_src_value = /*recipe*/ ctx[13].image)) attr_dev(img, "src", img_src_value);
+    			attr_dev(img, "alt", img_alt_value = /*recipe*/ ctx[13].title);
+    			attr_dev(img, "class", "svelte-hyhval");
+    			add_location(img, file, 58, 4, 1559);
+    			attr_dev(button, "class", "svelte-hyhval");
+    			add_location(button, file, 59, 4, 1612);
+    			attr_dev(div, "class", "recipe svelte-hyhval");
+    			add_location(div, file, 56, 3, 1506);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, img, anchor);
-    			insert_dev(target, t0, anchor);
-    			insert_dev(target, h1, anchor);
-    			append_dev(h1, t1);
+    			insert_dev(target, div, anchor);
+    			append_dev(div, h1);
+    			append_dev(h1, t0);
+    			append_dev(div, t1);
+    			append_dev(div, img);
+    			append_dev(div, t2);
+    			append_dev(div, button);
+    			append_dev(div, t4);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*recipe*/ 2 && img.src !== (img_src_value = /*recipe*/ ctx[1].image)) {
+    			if (dirty & /*recipes*/ 2 && t0_value !== (t0_value = /*recipe*/ ctx[13].title + "")) set_data_dev(t0, t0_value);
+
+    			if (dirty & /*recipes*/ 2 && img.src !== (img_src_value = /*recipe*/ ctx[13].image)) {
     				attr_dev(img, "src", img_src_value);
     			}
 
-    			if (dirty & /*recipe*/ 2 && img_alt_value !== (img_alt_value = /*recipe*/ ctx[1].title)) {
+    			if (dirty & /*recipes*/ 2 && img_alt_value !== (img_alt_value = /*recipe*/ ctx[13].title)) {
     				attr_dev(img, "alt", img_alt_value);
     			}
-
-    			if (dirty & /*recipe*/ 2 && t1_value !== (t1_value = /*recipe*/ ctx[1].title + "")) set_data_dev(t1, t1_value);
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(img);
-    			if (detaching) detach_dev(t0);
-    			if (detaching) detach_dev(h1);
+    			if (detaching) detach_dev(div);
     		}
     	};
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block.name,
-    		type: "if",
-    		source: "(63:2) {#if recipe}",
+    		id: create_each_block_1.name,
+    		type: "each",
+    		source: "(56:2) {#each recipes as recipe}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (71:2) {#each ingredients as item}
+    // (66:2) {#each ingredients as item}
     function create_each_block(ctx) {
     	let li;
-    	let t_value = /*item*/ ctx[9] + "";
-    	let t;
+    	let t0_value = /*item*/ ctx[10] + "";
+    	let t0;
+    	let t1;
+    	let div;
+    	let t2;
+    	let div_style_value;
+    	let dispose;
+
+    	function click_handler_1(...args) {
+    		return /*click_handler_1*/ ctx[9](/*item*/ ctx[10], ...args);
+    	}
 
     	const block = {
     		c: function create() {
     			li = element("li");
-    			t = text(t_value);
-    			attr_dev(li, "class", "svelte-1qypst1");
-    			add_location(li, file, 71, 3, 1927);
+    			t0 = text(t0_value);
+    			t1 = space();
+    			div = element("div");
+    			t2 = text("x\n\t\t\t");
+    			attr_dev(li, "class", "svelte-hyhval");
+    			add_location(li, file, 66, 3, 1736);
+    			attr_dev(div, "class", "remove");
+
+    			attr_dev(div, "style", div_style_value = /*suggestions*/ ctx[3].includes(/*item*/ ctx[10])
+    			? "color:tomato"
+    			: "color: blue");
+
+    			add_location(div, file, 67, 3, 1755);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
-    			append_dev(li, t);
+    			append_dev(li, t0);
+    			insert_dev(target, t1, anchor);
+    			insert_dev(target, div, anchor);
+    			append_dev(div, t2);
+    			dispose = listen_dev(div, "click", click_handler_1, false, false, false);
     		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*ingredients*/ 1 && t_value !== (t_value = /*item*/ ctx[9] + "")) set_data_dev(t, t_value);
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+    			if (dirty & /*ingredients*/ 1 && t0_value !== (t0_value = /*item*/ ctx[10] + "")) set_data_dev(t0, t0_value);
+
+    			if (dirty & /*suggestions, ingredients*/ 9 && div_style_value !== (div_style_value = /*suggestions*/ ctx[3].includes(/*item*/ ctx[10])
+    			? "color:tomato"
+    			: "color: blue")) {
+    				attr_dev(div, "style", div_style_value);
+    			}
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(li);
+    			if (detaching) detach_dev(t1);
+    			if (detaching) detach_dev(div);
+    			dispose();
     		}
     	};
 
@@ -474,7 +528,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(71:2) {#each ingredients as item}",
+    		source: "(66:2) {#each ingredients as item}",
     		ctx
     	});
 
@@ -490,11 +544,22 @@ var app = (function () {
     	let div0;
     	let t3;
     	let main;
-    	let div1;
+    	let img;
+    	let img_src_value;
     	let t4;
+    	let div1;
+    	let t5;
     	let div2;
     	let dispose;
-    	let each_value_1 = /*suggestions*/ ctx[3];
+    	let each_value_2 = /*suggestions*/ ctx[3];
+    	validate_each_argument(each_value_2);
+    	let each_blocks_2 = [];
+
+    	for (let i = 0; i < each_value_2.length; i += 1) {
+    		each_blocks_2[i] = create_each_block_2(get_each_context_2(ctx, each_value_2, i));
+    	}
+
+    	let each_value_1 = /*recipes*/ ctx[1];
     	validate_each_argument(each_value_1);
     	let each_blocks_1 = [];
 
@@ -502,7 +567,6 @@ var app = (function () {
     		each_blocks_1[i] = create_each_block_1(get_each_context_1(ctx, each_value_1, i));
     	}
 
-    	let if_block = /*recipe*/ ctx[1] && create_if_block(ctx);
     	let each_value = /*ingredients*/ ctx[0];
     	validate_each_argument(each_value);
     	let each_blocks = [];
@@ -517,40 +581,50 @@ var app = (function () {
     			input = element("input");
     			t0 = space();
     			button = element("button");
-    			button.textContent = "finn oppskrift";
+    			button.textContent = "FIND RECIPE";
     			t2 = space();
     			div0 = element("div");
+
+    			for (let i = 0; i < each_blocks_2.length; i += 1) {
+    				each_blocks_2[i].c();
+    			}
+
+    			t3 = space();
+    			main = element("main");
+    			img = element("img");
+    			t4 = space();
+    			div1 = element("div");
 
     			for (let i = 0; i < each_blocks_1.length; i += 1) {
     				each_blocks_1[i].c();
     			}
 
-    			t3 = space();
-    			main = element("main");
-    			div1 = element("div");
-    			if (if_block) if_block.c();
-    			t4 = space();
+    			t5 = space();
     			div2 = element("div");
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].c();
     			}
 
-    			attr_dev(input, "placeholder", "Search for ingredients");
-    			attr_dev(input, "class", "svelte-1qypst1");
-    			add_location(input, file, 49, 1, 1256);
-    			attr_dev(button, "class", "svelte-1qypst1");
-    			add_location(button, file, 50, 1, 1392);
-    			attr_dev(div0, "class", "suggestions svelte-1qypst1");
-    			add_location(div0, file, 52, 1, 1448);
-    			attr_dev(header, "class", "svelte-1qypst1");
-    			add_location(header, file, 47, 0, 1198);
-    			attr_dev(div1, "class", "recipes svelte-1qypst1");
-    			add_location(div1, file, 61, 1, 1645);
-    			attr_dev(div2, "class", "ingredients svelte-1qypst1");
-    			add_location(div2, file, 69, 1, 1867);
-    			attr_dev(main, "class", "svelte-1qypst1");
-    			add_location(main, file, 59, 0, 1636);
+    			attr_dev(input, "placeholder", "Search for ingredients...");
+    			attr_dev(input, "class", "svelte-hyhval");
+    			add_location(input, file, 40, 1, 1011);
+    			attr_dev(button, "class", "svelte-hyhval");
+    			add_location(button, file, 41, 1, 1150);
+    			attr_dev(div0, "class", "suggestions svelte-hyhval");
+    			add_location(div0, file, 43, 1, 1203);
+    			attr_dev(header, "class", "svelte-hyhval");
+    			add_location(header, file, 38, 0, 953);
+    			attr_dev(img, "class", "logo");
+    			if (img.src !== (img_src_value = "./img/logo.png")) attr_dev(img, "src", img_src_value);
+    			attr_dev(img, "alt", "logo");
+    			add_location(img, file, 52, 1, 1400);
+    			attr_dev(div1, "class", "recipes svelte-hyhval");
+    			add_location(div1, file, 54, 1, 1453);
+    			attr_dev(div2, "class", "ingredients svelte-hyhval");
+    			add_location(div2, file, 64, 1, 1677);
+    			attr_dev(main, "class", "svelte-hyhval");
+    			add_location(main, file, 50, 0, 1391);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -564,15 +638,21 @@ var app = (function () {
     			append_dev(header, t2);
     			append_dev(header, div0);
 
-    			for (let i = 0; i < each_blocks_1.length; i += 1) {
-    				each_blocks_1[i].m(div0, null);
+    			for (let i = 0; i < each_blocks_2.length; i += 1) {
+    				each_blocks_2[i].m(div0, null);
     			}
 
     			insert_dev(target, t3, anchor);
     			insert_dev(target, main, anchor);
-    			append_dev(main, div1);
-    			if (if_block) if_block.m(div1, null);
+    			append_dev(main, img);
     			append_dev(main, t4);
+    			append_dev(main, div1);
+
+    			for (let i = 0; i < each_blocks_1.length; i += 1) {
+    				each_blocks_1[i].m(div1, null);
+    			}
+
+    			append_dev(main, t5);
     			append_dev(main, div2);
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
@@ -580,7 +660,7 @@ var app = (function () {
     			}
 
     			dispose = [
-    				listen_dev(input, "input", /*getIngredients*/ ctx[5], false, false, false),
+    				listen_dev(input, "input", /*getIngredients*/ ctx[6], false, false, false),
     				listen_dev(input, "focus", focus_handler, false, false, false),
     				listen_dev(input, "input", /*input_input_handler*/ ctx[7]),
     				listen_dev(button, "click", /*getRecipes*/ ctx[4], false, false, false)
@@ -592,7 +672,31 @@ var app = (function () {
     			}
 
     			if (dirty & /*ingredients, suggestions*/ 9) {
-    				each_value_1 = /*suggestions*/ ctx[3];
+    				each_value_2 = /*suggestions*/ ctx[3];
+    				validate_each_argument(each_value_2);
+    				let i;
+
+    				for (i = 0; i < each_value_2.length; i += 1) {
+    					const child_ctx = get_each_context_2(ctx, each_value_2, i);
+
+    					if (each_blocks_2[i]) {
+    						each_blocks_2[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks_2[i] = create_each_block_2(child_ctx);
+    						each_blocks_2[i].c();
+    						each_blocks_2[i].m(div0, null);
+    					}
+    				}
+
+    				for (; i < each_blocks_2.length; i += 1) {
+    					each_blocks_2[i].d(1);
+    				}
+
+    				each_blocks_2.length = each_value_2.length;
+    			}
+
+    			if (dirty & /*recipes*/ 2) {
+    				each_value_1 = /*recipes*/ ctx[1];
     				validate_each_argument(each_value_1);
     				let i;
 
@@ -604,7 +708,7 @@ var app = (function () {
     					} else {
     						each_blocks_1[i] = create_each_block_1(child_ctx);
     						each_blocks_1[i].c();
-    						each_blocks_1[i].m(div0, null);
+    						each_blocks_1[i].m(div1, null);
     					}
     				}
 
@@ -615,20 +719,7 @@ var app = (function () {
     				each_blocks_1.length = each_value_1.length;
     			}
 
-    			if (/*recipe*/ ctx[1]) {
-    				if (if_block) {
-    					if_block.p(ctx, dirty);
-    				} else {
-    					if_block = create_if_block(ctx);
-    					if_block.c();
-    					if_block.m(div1, null);
-    				}
-    			} else if (if_block) {
-    				if_block.d(1);
-    				if_block = null;
-    			}
-
-    			if (dirty & /*ingredients*/ 1) {
+    			if (dirty & /*suggestions, ingredients, add*/ 41) {
     				each_value = /*ingredients*/ ctx[0];
     				validate_each_argument(each_value);
     				let i;
@@ -656,10 +747,10 @@ var app = (function () {
     		o: noop,
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(header);
-    			destroy_each(each_blocks_1, detaching);
+    			destroy_each(each_blocks_2, detaching);
     			if (detaching) detach_dev(t3);
     			if (detaching) detach_dev(main);
-    			if (if_block) if_block.d();
+    			destroy_each(each_blocks_1, detaching);
     			destroy_each(each_blocks, detaching);
     			run_all(dispose);
     		}
@@ -681,16 +772,20 @@ var app = (function () {
 
     function instance($$self, $$props, $$invalidate) {
     	let ingredients = [];
-    	let recipe;
+    	let recipes = [];
 
     	const getRecipes = () => {
-    		fetch(`https://api.spoonacular.com/recipes/findByIngredients?apiKey=${apikey}&ingredients=${ingredients}&number=1`).then(res => res.json()).then(json => $$invalidate(1, recipe = json[0]));
+    		fetch(`https://api.spoonacular.com/recipes/findByIngredients?apiKey=${apikey}&ingredients=${ingredients}&number=5`).then(res => res.json()).then(json => $$invalidate(1, recipes = json));
     	};
 
-    	const add = e => {
-    		e.target.checked
-    		? $$invalidate(0, ingredients = [...ingredients, e.target.id])
-    		: ingredients.filter(i => i != e.target.id);
+    	const add = item => {
+    		if (!suggestions.includes(item)) {
+    			e.target.checked
+    			? $$invalidate(0, ingredients = [...ingredients, e.target.id])
+    			: ingredients.filter(i => i != e.target.id);
+    		} else {
+    			$$invalidate(3, suggestions = suggestions.filter(element => element != item));
+    		}
     	};
 
     	let ingredient = "";
@@ -711,23 +806,25 @@ var app = (function () {
     	}
 
     	const click_handler = item => $$invalidate(0, ingredients = [item.name, ...ingredients]);
+    	const click_handler_1 = item => add(item);
 
     	$$self.$capture_state = () => ({
     		apikey,
     		ingredients,
-    		recipe,
+    		recipes,
     		getRecipes,
     		add,
     		ingredient,
     		suggestions,
     		getIngredients,
     		console,
-    		fetch
+    		fetch,
+    		e
     	});
 
     	$$self.$inject_state = $$props => {
     		if ("ingredients" in $$props) $$invalidate(0, ingredients = $$props.ingredients);
-    		if ("recipe" in $$props) $$invalidate(1, recipe = $$props.recipe);
+    		if ("recipes" in $$props) $$invalidate(1, recipes = $$props.recipes);
     		if ("ingredient" in $$props) $$invalidate(2, ingredient = $$props.ingredient);
     		if ("suggestions" in $$props) $$invalidate(3, suggestions = $$props.suggestions);
     	};
@@ -744,14 +841,15 @@ var app = (function () {
 
     	return [
     		ingredients,
-    		recipe,
+    		recipes,
     		ingredient,
     		suggestions,
     		getRecipes,
-    		getIngredients,
     		add,
+    		getIngredients,
     		input_input_handler,
-    		click_handler
+    		click_handler,
+    		click_handler_1
     	];
     }
 

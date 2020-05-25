@@ -3,17 +3,21 @@
 	const apikey = '44be8784988a4def8aada63319c511cb'
 
 	let ingredients = []
-	let recipe
+	let recipes = []
 	$: console.log(ingredients.toString())
 	
 	const getRecipes = () => {
-		fetch(`https://api.spoonacular.com/recipes/findByIngredients?apiKey=${apikey}&ingredients=${ingredients}&number=1`)
+		fetch(`https://api.spoonacular.com/recipes/findByIngredients?apiKey=${apikey}&ingredients=${ingredients}&number=5`)
 			.then(res=>res.json())
-			.then(json => recipe=json[0])
+			.then(json => recipes=json)
 	}
 	
-	const add = (e) => {
-		e.target.checked ? ingredients = [...ingredients, e.target.id] : ingredients.filter(i => i!= e.target.id)
+	const add = (item) => {
+		if (!suggestions.includes(item)) {
+			e.target.checked ? ingredients = [...ingredients, e.target.id] : ingredients.filter(i => i!= e.target.id)
+		} else {
+			suggestions = suggestions.filter( element => element!= item)
+		}
 	}
 
 	let ingredient = ''
@@ -29,26 +33,13 @@
 			})
 		}
 	}
-
-	// let id = []
-	// let wholeRecipe 
-
-	// const showRecipe = () => {
-	// 	fetch(`https://api.spoonacular.com/recipes/${id}/ingredientWidget.json`)
-	// 	.then( res => res.json())
-	// 	.then( json =>  {
-	// 		console.log(json)
-	// 		wholeRecipe = json.id[0].ingredients.amaount.metric.unit 
-	// 		wholeRecipe = json.id[0].ingredients.amaount.metric.value 
-	// 	})
-	// }
 	
 </script>
 
 <header>
 	<!-- <h2>What's in the fridge today? </h2> -->
-	<input placeholder='Search for ingredients' on:input={getIngredients} on:focus={ e => e.target.value = '' } bind:value={ingredient} />
-	<button on:click={getRecipes}>finn oppskrift</button>
+	<input placeholder='Search for ingredients...' on:input={getIngredients} on:focus={ e => e.target.value = '' } bind:value={ingredient} />
+	<button on:click={getRecipes}>FIND RECIPE</button>
 
 	<div class="suggestions">	
 		{#each suggestions as item}
@@ -59,17 +50,27 @@
 
 <main>
 
+	<img class="logo" src="./img/logo.png" alt="logo">
+
 	<div class="recipes">
-		{#if recipe}
-			<img  src="{recipe.image}" alt="{recipe.title}">
-			<h1>{recipe.title}</h1>
-			<!-- <button bind-value={wholeRecipe.id} on:click{showRecipe}>Reed more</button> -->
-		{/if}
+		{#each recipes as recipe}
+			<div class="recipe">
+				<h1>{recipe.title}</h1>
+				<img  src="{recipe.image}" alt="{recipe.title}">
+				<button>VIEW WHOLE RECIPE</button>
+			</div>
+		{/each}
 	</div>
 
-	<div class="ingredients">	
+	<div class="ingredients">
 		{#each ingredients as item}
 			<li>{item}</li>
+			<div class="remove" 
+				on:click={()=>add(item)}
+				style={suggestions.includes(item) ? 'color:tomato' : 'color: blue'}
+				> 
+				x
+			</div>
 		{/each}
 	</div>
 	
@@ -86,22 +87,28 @@
 	}
 	header {
 		padding: 1rem 4rem 1rem 4rem;
-		height: 20vh;
-		margin: 0 1rem 0 1rem ;
+		height: 25vh;
+		width: 96vw;
+		left: 2vw;
 		background-color: #CCD6A9;
 		border-radius: 0 0 100px 100px;
+		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+		position: fixed;
+		z-index: 10;
 	}
 
 	input, button {
 		padding: 1rem;
+		margin-top: 1.2rem;
 		margin-bottom: 1rem;
 		border-radius: 100px;
 		outline: none;
+		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 	}
 
 	input {
 		margin-right: 1rem;
-		width: 49vw;
+		width: 50vw;
 		background-color: #E6E7D4;
 		border: none;
 	}
@@ -112,23 +119,37 @@
 		color: #E6E7D4;
 		font-weight: bold;
 		border: none;
+		transition: ease 0.3s;
+	}
+
+	button:hover {
+		transform: scale(1.1);
 	}
 	.suggestions {
+		width: 63vw;
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
 		gap: 1rem;
+		
 	
 	}
 	.suggestion {
 		display: grid;
 		place-items: center;
 		padding: .5rem; 
+		text-align: center;
 		border-radius: 100px;
 		background-color: #97A885;
 		color: white;
+		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+		transition: ease 0.2s;
+	}
+
+	.suggestion:hover {
+		transform: scale(1.1);
 	}
 	main {
-		height: 75vh;
+		min-height: 100vh;
 		text-align: left;
 		padding: 1em;
 		max-width: 100vw;
@@ -138,29 +159,61 @@
 	}
 
 	.recipes {
-		margin: 1rem;
+		margin: 2rem;
+		display: grid;
+		place-items: center;
+		gap: 2rem;
+		position: absolute;
+		top: 25vh;
+		left: 0;
+		overflow: scroll;
+		z-index: 5;
+		scroll-behavior: smooth;
+	}
+
+	.recipe {
+		width: 70vw;
+		height: 68vh;
+		padding: 1rem;
+		text-align: center;
 		background-color: #CCD6A9;
 		border-radius: 100px 1px 100px 1px;
 		display: grid;
-		grid-template-columns: auto auto;
-		place-items: contain;
+		place-items: center;
+		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+		
+	}
+	.recipe img {
+		border-radius: 100px 1px 100px 1px;
+		object-fit: cover;
+		margin: 1rem;
+		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 	}
 
-	.recipes img {
-		border-radius: 100px 1px 1px 1px;
-		object-fit: cover;
-		margin: 4rem;
-
+	.recipe button {
+		margin-bottom: 2rem;
 	}
 	.ingredients {
-		margin: 1rem;
+		min-height: 20vw;
+		max-height: 68vh;
+		width: 22vw;
+		right: 0;
+		top: 25vh;
+		margin: 2rem;
+		padding: 4rem;
 		list-style-type: none;
 		display: grid;
+		grid-template-columns: auto auto;
 		place-content: center;
+		gap: 1rem;
 		padding: 1rem;
 		border-radius: 1px 100px 1px 100px;
 		background-color: #E9D095;
 		color: white;
+		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+		position: fixed;
+		transition: ease 1s;
+		overflow: scroll;
 	}
 
 	.ingredients li {
@@ -169,8 +222,8 @@
 	h1 {
 		color: tomato;
 		text-transform: uppercase;
-		font-size: 2rem;
-		margin-top: 4rem;
+		font-size: 1.6rem;
+		margin: 2rem 0 1rem 0;
 	}
 	@media (min-width: 640px) {
 		main {
