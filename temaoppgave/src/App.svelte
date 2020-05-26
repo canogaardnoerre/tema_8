@@ -33,6 +33,14 @@
 			})
 		}
 	}
+
+	const wholeRecipe = () => {
+		fetch(` https://api.spoonacular.com/recipes/${id}/information`)
+			.then( res => res.json() )
+			.then( json => {
+				
+			})
+	}
 	
 </script>
 
@@ -50,7 +58,7 @@
 
 <main>
 
-	<img class="logo" src="./img/logo.png" alt="logo">
+	<!-- <img class="logo" src="./img/logo.png" alt="logo"> -->
 
 	<div class="recipes">
 		{#each recipes as recipe}
@@ -67,9 +75,8 @@
 			<li>{item}</li>
 			<div class="remove" 
 				on:click={()=>add(item)}
-				style={suggestions.includes(item) ? 'color:tomato' : 'color: blue'}
-				> 
-				x
+				style={suggestions.includes(item) ? 'color:tomato' : 'color: blue'}> 
+				<img src="./img/cross.png" alt="remove">
 			</div>
 		{/each}
 	</div>
@@ -119,7 +126,7 @@
 		color: #E6E7D4;
 		font-weight: bold;
 		border: none;
-		transition: ease 0.3s;
+		transition: ease 0.2s;
 	}
 
 	button:hover {
@@ -130,8 +137,6 @@
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
 		gap: 1rem;
-		
-	
 	}
 	.suggestion {
 		display: grid;
@@ -194,7 +199,7 @@
 		margin-bottom: 2rem;
 	}
 	.ingredients {
-		min-height: 20vw;
+		min-height: 68vh;
 		max-height: 68vh;
 		width: 22vw;
 		right: 0;
