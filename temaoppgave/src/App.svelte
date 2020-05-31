@@ -10,13 +10,14 @@
 		fetch(`https://api.spoonacular.com/recipes/findByIngredients?apiKey=${apikey}&ingredients=${ingredients}&number=5`)
 			.then(res=>res.json())
 			.then(json => recipes=json)
+			console.log(json)
 	}
 	
 	const add = (item) => {
-		if (!suggestions.includes(item)) {
-			e.target.checked ? ingredients = [...ingredients, e.target.id] : ingredients.filter(i => i!= e.target.id)
+		if (!ingredients.includes(item)) {
+			ingredients = [...ingredients, item]
 		} else {
-			suggestions = suggestions.filter( element => element!= item)
+			ingredients = ingredients.filter( element => element!= item)
 		}
 	}
 
@@ -34,18 +35,17 @@
 		}
 	}
 
-	const wholeRecipe = () => {
-		fetch(` https://api.spoonacular.com/recipes/${id}/information`)
-			.then( res => res.json() )
-			.then( json => {
-				
-			})
+	let showRecipe = false
+	let theRecipe 
+	
+	const show = recipe => {
+		showRecipe = true
+		theRecipe = recipe
 	}
 	
 </script>
 
 <header>
-	<!-- <h2>What's in the fridge today? </h2> -->
 	<input placeholder='Search for ingredients...' on:input={getIngredients} on:focus={ e => e.target.value = '' } bind:value={ingredient} />
 	<button on:click={getRecipes}>FIND RECIPE</button>
 
@@ -58,32 +58,47 @@
 
 <main>
 
-	<!-- <img class="logo" src="./img/logo.png" alt="logo"> -->
+<img class="logo" src="../img/logo.png" alt="logo">
 
+{#if !showRecipe}
 	<div class="recipes">
 		{#each recipes as recipe}
 			<div class="recipe">
 				<h1>{recipe.title}</h1>
 				<img  src="{recipe.image}" alt="{recipe.title}">
-				<button>VIEW WHOLE RECIPE</button>
+				<button on:click={() => show (recipe) }>VIEW MISSED INGREDIENTS</button>
 			</div>
 		{/each}
 	</div>
+{:else}
+	 <div class="recipe2">
+		<h1>{theRecipe.title}</h1>
+		<p>Missed ingredients:</p>
+		{#each theRecipe.missedIngredients as missed}
+			<li>{missed.name}</li>
+		{/each}
+		<button on:click={() => showRecipe = false }>CLOSE</button>
+	 </div>
+{/if}
+
+
 
 	<div class="ingredients">
 		{#each ingredients as item}
 			<li>{item}</li>
 			<div class="remove" 
 				on:click={()=>add(item)}
-				style={suggestions.includes(item) ? 'color:tomato' : 'color: blue'}> 
-				<img src="./img/cross.png" alt="remove">
+				style={suggestions.includes(item) ? 'height:2rem' : 'height: 1rem'}> 
+			<img src="../img/cross.png" alt="close-sign">
 			</div>
+
 		{/each}
 	</div>
 	
 </main>
 
 <style>
+	@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 	:global(*) {
 		box-sizing: border-box;
@@ -91,6 +106,7 @@
 
 	:global(body, html) {
 		background-color: #E6E7D4;
+		font-family: 'Raleway', sans-serif;
 	}
 	header {
 		padding: 1rem 4rem 1rem 4rem;
@@ -116,13 +132,14 @@
 	input {
 		margin-right: 1rem;
 		width: 50vw;
+		color: #676E5E;
 		background-color: #E6E7D4;
 		border: none;
 	}
 
 	button {
 		width: 148px;
-		background-color: tomato;
+		background-color: #C14C3B;
 		color: #E6E7D4;
 		font-weight: bold;
 		border: none;
@@ -130,9 +147,18 @@
 	}
 
 	button:hover {
-		transform: scale(1.1);
+		transform: scale(1.05);
+	}
+
+	.logo {
+		height: 230px;
+		position: fixed;
+		z-index: 15;
+		right: 6rem;
+		top: 2rem;
 	}
 	.suggestions {
+		margin-top: .5rem;
 		width: 63vw;
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
@@ -145,13 +171,15 @@
 		text-align: center;
 		border-radius: 100px;
 		background-color: #97A885;
-		color: white;
+		color: #E6E7D4;
+		font-size: .8rem;
+		letter-spacing: .1rem;
 		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 		transition: ease 0.2s;
 	}
 
 	.suggestion:hover {
-		transform: scale(1.1);
+		transform: scale(1.05);
 	}
 	main {
 		min-height: 100vh;
@@ -175,10 +203,9 @@
 		z-index: 5;
 		scroll-behavior: smooth;
 	}
-
 	.recipe {
 		width: 70vw;
-		height: 68vh;
+		min-height: 68vh;
 		padding: 1rem;
 		text-align: center;
 		background-color: #CCD6A9;
@@ -186,10 +213,35 @@
 		display: grid;
 		place-items: center;
 		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-		
+	}
+
+	.recipe2 {
+		width: 70vw;
+		min-height: 68vh;
+		padding: 1rem;
+		margin: 2rem;
+		text-align: center;
+		background-color: #CCD6A9; 
+		display: grid;
+		place-items: center;
+		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+		border-radius: 100px 1px 100px 1px;
+		position: absolute;
+		top: 25vh;
+		left: 0;
+		overflow: scroll;
+		z-index: 5;
+		scroll-behavior: smooth;
+		letter-spacing: .1rem;
+		color: #676E5E;
+	}
+
+	.recipe2 li {
+		list-style-type: none;
 	}
 	.recipe img {
 		border-radius: 100px 1px 100px 1px;
+		height: 200px;
 		object-fit: cover;
 		margin: 1rem;
 		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -197,7 +249,10 @@
 
 	.recipe button {
 		margin-bottom: 2rem;
+		
 	}
+
+
 	.ingredients {
 		min-height: 68vh;
 		max-height: 68vh;
@@ -210,26 +265,45 @@
 		display: grid;
 		grid-template-columns: auto auto;
 		place-content: center;
-		gap: 1rem;
+		gap: 2rem;
 		padding: 1rem;
 		border-radius: 1px 100px 1px 100px;
 		background-color: #E9D095;
-		color: white;
+		color: #676E5E;
 		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 		position: fixed;
-		transition: ease 1s;
+		transition: ease .2s;
 		overflow: scroll;
 	}
-
 	.ingredients li {
-		padding: .5rem;
+		padding: .2rem;
+		transition: ease .2s;
+		font-size: 1.2rem;
+		letter-spacing: .1rem;
+	}
+
+	.remove {
+		height: 1rem;
+		padding-top: .5rem;
+	}
+
+	.remove:hover {
+		transform: scale(1.05);	
 	}
 	h1 {
-		color: tomato;
+		color: #C14C3B;
 		text-transform: uppercase;
 		font-size: 1.6rem;
 		margin: 2rem 0 1rem 0;
+		letter-spacing: .2rem;
 	}
+
+	p {
+		font-size: 1.2rem;
+		font-weight: bold;
+		
+	}
+	
 	@media (min-width: 640px) {
 		main {
 			max-width: none;
