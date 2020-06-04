@@ -1,5 +1,10 @@
 <script>
 
+	import Description from './Description.svelte'
+	import { fade } from 'svelte/transition';
+	
+	let showDescription = true
+
 	const apikey = '44be8784988a4def8aada63319c511cb'
 
 	let ingredients = []
@@ -48,6 +53,7 @@
 <header>
 	<input placeholder='Search for ingredients...' on:input={getIngredients} on:focus={ e => e.target.value = '' } bind:value={ingredient} />
 	<button on:click={getRecipes}>FIND RECIPE</button>
+	<button id="desc" on:click="{ () => showDescription = true}">?</button>
 
 	<div class="suggestions">	
 		{#each suggestions as item}
@@ -57,31 +63,40 @@
 </header>
 
 <main>
+	<img class="logo" src="../img/logo.png" alt="logo">
 
-<img class="logo" src="../img/logo.png" alt="logo">
+	{#if showDescription}
+		<Description on:close="{ () => showDescription = false }" >
+			<h2 slot="x">What's in your fridge?</h2>
+			<ol slot="list" class="descriptions">
+				<li>Search for ingrediences based on what is in your fridge</li>
+				<li>Click at the wanted ingrediences and add them to your list</li>
+				<li>Click the button "FIND RECIPE" to see reciepes based on your list of ingrediences</li>
+				<li>Click at the wanted recipe to find out what ingrediences you are missing</li>
+			</ol>
+		</Description>
+	{/if}
 
-{#if !showRecipe}
-	<div class="recipes">
-		{#each recipes as recipe}
-			<div class="recipe">
-				<h1>{recipe.title}</h1>
-				<img  src="{recipe.image}" alt="{recipe.title}">
-				<button on:click={() => show (recipe) }>VIEW MISSED INGREDIENTS</button>
-			</div>
-		{/each}
-	</div>
-{:else}
-	 <div class="recipe2">
-		<h1>{theRecipe.title}</h1>
-		<p>Missed ingredients:</p>
-		{#each theRecipe.missedIngredients as missed}
-			<li>{missed.name}</li>
-		{/each}
-		<button on:click={() => showRecipe = false }>CLOSE</button>
-	 </div>
-{/if}
-
-
+	{#if !showRecipe}
+		<div class="recipes">
+			{#each recipes as recipe}
+				<div class="recipe" transition:fade>
+					<h1>{recipe.title}</h1>
+					<img  src="{recipe.image}" alt="{recipe.title}">
+					<button on:click={() => show (recipe) }>VIEW MISSED INGREDIENTS</button>
+				</div>
+			{/each}
+		</div>
+	{:else}
+		<div class="recipe2" transition:fade>
+			<h1>{theRecipe.title}</h1>
+			<p>Missed ingredients:</p>
+			{#each theRecipe.missedIngredients as missed}
+				<li>{missed.name}</li>
+			{/each}
+			<button on:click={() => showRecipe = false }>CLOSE</button>
+		</div>
+	{/if}
 
 	<div class="ingredients">
 		{#each ingredients as item}
@@ -94,7 +109,6 @@
 
 		{/each}
 	</div>
-	
 </main>
 
 <style>
@@ -108,6 +122,7 @@
 		background-color: #E6E7D4;
 		font-family: 'Raleway', sans-serif;
 	}
+	
 	header {
 		padding: 1rem 4rem 1rem 4rem;
 		height: 25vh;
@@ -138,12 +153,17 @@
 	}
 
 	button {
+		margin-right: 1rem;
 		width: 148px;
 		background-color: #C14C3B;
 		color: #E6E7D4;
 		font-weight: bold;
 		border: none;
 		transition: ease 0.2s;
+	}
+
+	#desc {
+		width: 50px;
 	}
 
 	button:hover {
@@ -157,6 +177,7 @@
 		right: 6rem;
 		top: 2rem;
 	}
+
 	.suggestions {
 		margin-top: .5rem;
 		width: 63vw;
@@ -164,6 +185,7 @@
 		grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
 		gap: 1rem;
 	}
+
 	.suggestion {
 		display: grid;
 		place-items: center;
@@ -181,6 +203,7 @@
 	.suggestion:hover {
 		transform: scale(1.05);
 	}
+
 	main {
 		min-height: 100vh;
 		text-align: left;
@@ -203,6 +226,7 @@
 		z-index: 5;
 		scroll-behavior: smooth;
 	}
+	
 	.recipe {
 		width: 70vw;
 		min-height: 68vh;
@@ -239,6 +263,7 @@
 	.recipe2 li {
 		list-style-type: none;
 	}
+
 	.recipe img {
 		border-radius: 100px 1px 100px 1px;
 		height: 200px;
@@ -249,10 +274,8 @@
 
 	.recipe button {
 		margin-bottom: 2rem;
-		
 	}
-
-
+	
 	.ingredients {
 		min-height: 68vh;
 		max-height: 68vh;
@@ -275,6 +298,7 @@
 		transition: ease .2s;
 		overflow: scroll;
 	}
+	
 	.ingredients li {
 		padding: .2rem;
 		transition: ease .2s;
@@ -290,6 +314,7 @@
 	.remove:hover {
 		transform: scale(1.05);	
 	}
+	
 	h1 {
 		color: #C14C3B;
 		text-transform: uppercase;
@@ -298,12 +323,16 @@
 		letter-spacing: .2rem;
 	}
 
+	h2 {
+		letter-spacing: .2rem;
+		margin: 2rem 0 1rem 0;
+	}
+
 	p {
 		font-size: 1.2rem;
-		font-weight: bold;
-		
+		font-weight: bold;	
 	}
-	
+
 	@media (min-width: 640px) {
 		main {
 			max-width: none;
